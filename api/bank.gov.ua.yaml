@@ -1,0 +1,91 @@
+openapi: 3.1.0
+info:
+  title: Bank.gov.ua
+  description: Rate API for National Bank of Ukraine
+  version: 1.0.0
+servers:
+  - url: 'https://bank.gov.ua/'
+basePath: "/NBUStatService/v1/statdirectory"
+tags:
+- name: "today"
+  description: "Отримання поточного курсу USD до UAH"
+- name: "date"
+  description: "Отримання курсу USD до UAH вказану дату"
+schemes:
+  - "https"
+paths:
+  /exchange?valcode=USD&json:
+    get:
+      summary: "Отримати поточний курс USD до UAH"
+      parameters:
+        - in: query
+          name: valcode
+          schema:
+            type: string
+          description: Код валюти
+          required: true
+        - in: query
+          name: json
+          schema:
+            type: boolean
+          description: Формат відповіді у JSON
+      responses:
+        '200':
+          description: Успішна відповідь
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    r030:
+                      type: integer
+                      example: 840
+                    txt:
+                      type: string
+                      example: Долар США
+                    rate:
+                      type: number
+                      format: float
+                      example: 39.4272
+                    cc:
+                      type: string
+                      example: USD
+                    exchangedate:
+                      type: string
+                      example: '20.05.2024'
+#    get:
+#      tags:
+#        - "rate"
+#      summary: "Отримати поточний курс USD до UAH"
+#      description: "Запит повертає поточний курс USD до UAH використовуючи сервіс з публічним АРІ від НБУ"
+#      operationId: "rate"
+#      produces:
+#        - "application/json"
+#      responses:
+#        200:
+#          description:  "Повертається актуальний курс USD до UAH"
+#          content:
+#            application/json:
+#              schema:
+#
+#    get:
+#      summary: Get current USD rate
+#      description: Get current USD rate
+#      operationId: rate
+#      responses:
+#        '200':
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                type: object
+#                properties:
+#                  rate:
+#                    type: number
+#                    example: 29.84
+#
+# /NBUStatService/v1/statdirectory/exchange?valcode=USD&date=20200302&json
+#
+#
