@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"  # Replace 8080 with your application port
+    volumes:
+      - ./:/go/src/app  # Mount your source code directory into the container
+
+  # Optional: Database service (replace with your database configuration)
+  # db:
+  #   image: postgres:latest  # Replace with your desired database image
+  #   environment:
+  #     POSTGRES_USER: your_username
+  #     POSTGRES_PASSWORD: your_password
+  #     POSTGRES_DB: your_database_name
+  #   ports:
+  #     - "5432:5432"  # Replace 5432 with your database port
+
+volumes:
+  # Optional: Shared volume for persistent data (if needed)
+  # persistent_data:
