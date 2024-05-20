@@ -59,21 +59,24 @@ func subscribe(email string) (statusCode uint16) {
 	}
 	return
 }
-func BbInit1() { dbInit() }
+
+func DbInit() { dbInit() }
+
 func dbInit() {
 	// Check if the database file exists
 	if _, err := os.Stat(DB_SOURCE_NAME); err != nil {
-		// Create the database file if it doesn't exist
-		dbFile, err := os.Create(DB_SOURCE_NAME)
-		if err != nil {
-			panic(err)
+		// Create the database directory if it doesn't exist
+		if err := os.MkdirAll(DB_PATH, 0755); err == nil {
+			log.Printf("Directory for Database is created: %v\n", DB_PATH)
 		}
-		defer dbFile.Close()
-		log.Printf("File for Database created: %v\n", dbFile.Name())
+		// Create the database file if it doesn't exist
+		//dbFile, err := os.Create(DB_SOURCE_NAME)
+		//if err != nil {
+		//	panic(err)
+		//}
+		//defer dbFile.Close()
+		//log.Printf("File for Database is created: %v\n", dbFile.Name())
 
-		//log.Printf("Database file already exists: %v\n", DB_SOURCE_NAME)
-
-		//return
 	}
 
 	log.Printf("Database file already exists: %v\n", DB_SOURCE_NAME)
@@ -86,53 +89,29 @@ func dbInit() {
 
 	//log.Printf("Database file created: %v\n", dbFile.Name())
 
-	//err = createUsersTable(db)
+	//_,err = createUsersTable(db)
 	//if err != nil {
 	//	panic(err)
 	//}
 
 	_, err = db.Exec(`
-		CREATE TABLE users (
-# 			id INTEGER  AUTOINCREMENT,
-			email TEXT UNIQUE NOT NULL PRIMARY KEY
+		CREATE TABLE IF NOT EXISTS users (
+			id INTEGER  PRIMARY KEY AUTOINCREMENT,
+			email TEXT UNIQUE NOT NULL
 		);
 	`)
 	if err != nil {
 		panic(err)
 	}
 
-	//err = createRatesTable(db)
-	//if err != nil {
-	//	panic(err)
-	//}
-
-	// Proceed with your application logic
-	//return err
-}
-
-func createUsersTable(db *sql.DB) error {
-	_, err := db.Exec(`
-		CREATE TABLE users (
-# 			id INTEGER  AUTOINCREMENT,
-			email TEXT UNIQUE NOT NULL PRIMARY KEY
-		);
-	`)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func createRatesTable(db *sql.DB) error {
-	_, err := db.Exec(`
-		CREATE TABLE rates (
-# 		    id INTEGER PRIMARY KEY AUTOINCREMENT,
-			date DATE NOT NULL PRIMARY KEY,
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS rates (
+		    id INTEGER PRIMARY KEY AUTOINCREMENT,
+			date DATE UNIQUE NOT NULL,
 			rate FLOAT NOT NULL
 		);
 	`)
 	if err != nil {
-		return err
+		panic(err)
 	}
-	return nil
 }
