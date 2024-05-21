@@ -6,7 +6,8 @@ services:
     ports:
       - "8080:8080"  # Replace 8080 with your application port
     volumes:
-      - ./:/go/src/app  # Mount your source code directory into the container
+#      - ./:/go/src/  # Mount your source code directory into the container
+      - ./db:/db  # Mount your database directory into the container
 
   # Optional: Database service (replace with your database configuration)
   # db:
@@ -18,6 +19,6 @@ services:
   #   ports:
   #     - "5432:5432"  # Replace 5432 with your database port
 
-volumes:
+#volumes:
   # Optional: Shared volume for persistent data (if needed)
   # persistent_data:
